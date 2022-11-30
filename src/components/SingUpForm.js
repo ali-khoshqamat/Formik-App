@@ -1,23 +1,22 @@
-import { useState } from "react";
+import { useFormik } from "formik";
 
-// Formik:
+//! Formik:
 // 1. managing state
 // 2. handling form submission
 // 3. validation - error message
 
 const SingUpForm = () => {
-  const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
   });
+  console.log(formik.values);
 
-  const changeHandler = ({ target }) => {
-    setUserData({ ...userData, [target.name]: target.value });
-  };
   const submitHandler = (e) => {
     e.preventDefault();
-    setUserData({ name: "", email: "", password: "" });
   };
 
   return (
@@ -29,8 +28,8 @@ const SingUpForm = () => {
           <input
             type="text"
             name="name"
-            value={userData.name}
-            onChange={changeHandler}
+            value={formik.values.name}
+            onChange={formik.handleChange}
             className="py-1.5 px-2.5 text-[#24292f] border border-gray-300 rounded-md outline-none"
           />
         </div>
@@ -39,8 +38,8 @@ const SingUpForm = () => {
           <input
             type="text"
             name="email"
-            value={userData.email}
-            onChange={changeHandler}
+            value={formik.values.email}
+            onChange={formik.handleChange}
             className="py-1.5 px-2.5 text-[#24292f] border border-gray-300 rounded-md outline-none"
           />
         </div>
@@ -49,8 +48,8 @@ const SingUpForm = () => {
           <input
             type="text"
             name="password"
-            value={userData.password}
-            onChange={changeHandler}
+            value={formik.values.password}
+            onChange={formik.handleChange}
             className="py-1.5 px-2.5 text-[#24292f] border border-gray-300 rounded-md outline-none"
           />
         </div>
