@@ -10,12 +10,22 @@ const initialValues = {
   email: "",
   password: "",
 };
+const onSubmit = (values) => {
+  console.log(values);
+};
+const validate = (values) => {
+  //   console.log(values);
+  let errors = {};
+  !values.name && (errors.name = "Name is Required!");
+  !values.email && (errors.email = "Eamil is Required!");
+  !values.password && (errors.password = "Password is Required!");
+  return errors;
+};
 
 const SingUpForm = () => {
-  const formik = useFormik({
-    initialValues,
-    onSubmit: (values) => console.log(values),
-  });
+  const formik = useFormik({ initialValues, onSubmit, validate });
+
+  console.log(formik.errors);
 
   return (
     <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-lg">
