@@ -5,24 +5,22 @@ import { useFormik } from "formik";
 // 2. handling form submission
 // 3. validation - error message
 
+const initialValues = {
+  name: "",
+  email: "",
+  password: "",
+};
+
 const SingUpForm = () => {
   const formik = useFormik({
-    initialValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
+    initialValues,
+    onSubmit: (values) => console.log(values),
   });
-  console.log(formik.values);
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-  };
 
   return (
     <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-lg">
       <h2 className="font-bold text-center">SingUp Form</h2>
-      <form onSubmit={submitHandler} className="flex flex-col gap-y-2.5">
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-2.5">
         <div className="flex flex-col">
           <label className="text-sm">Name</label>
           <input
