@@ -1,3 +1,4 @@
+import * as Yup from "yup";
 import { useFormik } from "formik";
 
 //! Formik:
@@ -13,18 +14,24 @@ const initialValues = {
 const onSubmit = (values) => {
   console.log(values);
 };
-const validate = (values) => {
-  let errors = {};
-  !values.name && (errors.name = "Name is Required!");
-  !values.email && (errors.email = "Eamil is Required!");
-  !values.password && (errors.password = "Password is Required!");
-  return errors;
-};
+// const validate = (values) => {
+//   let errors = {};
+//   !values.name && (errors.name = "Name is Required!");
+//   !values.email && (errors.email = "Eamil is Required!");
+//   !values.password && (errors.password = "Password is Required!");
+//   return errors;
+// };
+const validationSchema = Yup.object({
+  name: Yup.string().required("Name is Required!"),
+  email: Yup.string()
+    .email("Invalid Eamil Format!")
+    .required("Email is Required!"),
+  password: Yup.string().required("Password is Required!"),
+});
 
 const SingUpForm = () => {
-  const formik = useFormik({ initialValues, onSubmit, validate });
-
-  console.log("visited fields", formik.touched);
+  const formik = useFormik({ initialValues, onSubmit, validationSchema });
+  //   console.log("visited fields", formik.touched);
 
   return (
     <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-lg">
@@ -69,7 +76,7 @@ const SingUpForm = () => {
         <div className="flex flex-col">
           <div className="flex justify-between items-center mb-0.5">
             <label className="text-sm">Password</label>
-            {formik.errors.password && formik.touched.password &&(
+            {formik.errors.password && formik.touched.password && (
               <label className="text-sm text-red-600">
                 {formik.errors.password}
               </label>
