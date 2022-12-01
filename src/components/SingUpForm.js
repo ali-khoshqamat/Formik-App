@@ -3,6 +3,47 @@ import { useFormik } from "formik";
 import Input from "../common/Input";
 import RadioBtn from "../common/RadioBtn";
 
+const SingUpForm = () => {
+  const formik = useFormik({
+    initialValues: savedFormValues || initialValues,
+    onSubmit,
+    validationSchema,
+    validateOnMount: true,
+    enableReinitialize: true,
+  });
+  console.log("formik values", formik.values);
+
+  return (
+    <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-lg">
+      <h2 className="font-bold text-center">SingUp Form</h2>
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-2.5">
+        {inputs.map((input) => (
+          <Input
+            key={input.name}
+            label={input.label}
+            name={input.name}
+            type={input.type}
+            formik={formik}
+          />
+        ))}
+        <div className="flex gap-x-2.5">
+          <RadioBtn label="Male" formik={formik} />
+          <RadioBtn label="Female" formik={formik} />
+        </div>
+        <button
+          type="submit"
+          disabled={!formik.isValid}
+          className="font-bold text-sm py-1.5 px-5 mt-3.5 w-min self-center border border-white rounded-md disabled:opacity-30"
+        >
+          Submit
+        </button>
+      </form>
+    </section>
+  );
+};
+
+export default SingUpForm;
+
 const initialValues = {
   name: "",
   email: "",
@@ -10,6 +51,14 @@ const initialValues = {
   password: "",
   passwordConfirmation: "",
   gender: "",
+};
+const savedFormValues = {
+  name: "Ali Khoshqamat",
+  email: "ali_khoshghamat@yahoo.com",
+  phoneNumber: "09120000000",
+  password: "Pp12345!",
+  passwordConfirmation: "Pp12345!",
+  gender: "Male",
 };
 const onSubmit = (values) => {
   console.log(values);
@@ -47,43 +96,3 @@ const inputs = [
     type: "password",
   },
 ];
-
-const SingUpForm = () => {
-  const formik = useFormik({
-    initialValues,
-    onSubmit,
-    validationSchema,
-    validateOnMount: true,
-  });
-  console.log("formik values", formik.values);
-
-  return (
-    <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-lg">
-      <h2 className="font-bold text-center">SingUp Form</h2>
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-2.5">
-        {inputs.map((input) => (
-          <Input
-            key={input.name}
-            label={input.label}
-            name={input.name}
-            type={input.type}
-            formik={formik}
-          />
-        ))}
-        <div className="flex gap-x-2.5">
-          <RadioBtn label="Male" formik={formik} />
-          <RadioBtn label="Female" formik={formik} />
-        </div>
-        <button
-          type="submit"
-          disabled={!formik.isValid}
-          className="font-bold text-sm py-1.5 px-5 mt-3.5 w-min self-center border border-white rounded-md disabled:opacity-30"
-        >
-          Submit
-        </button>
-      </form>
-    </section>
-  );
-};
-
-export default SingUpForm;

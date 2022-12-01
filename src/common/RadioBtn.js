@@ -9,9 +9,16 @@ const RadioBtn = ({ label, formik }) => {
         onChange={formik.handleChange}
         checked={formik.values.gender === label}
       />
-      <label htmlFor={label} className="text-sm">
-        {label}
-      </label>
+      <div className="flex justify-between items-center mb-0.5 gap-x-4">
+        <label htmlFor={label} className="text-sm">
+          {label}
+        </label>
+        {formik.errors.gender && formik.touched.gender && (
+          <label htmlFor={label} className="text-sm text-red-600">
+            {formik.errors.gender}
+          </label>
+        )}
+      </div>
     </div>
   );
 };
