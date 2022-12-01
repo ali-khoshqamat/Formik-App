@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Input from "../common/Input";
+import RadioBtn from "../common/RadioBtn";
 
 const initialValues = {
   name: "",
@@ -8,6 +9,7 @@ const initialValues = {
   phoneNumber: "",
   password: "",
   passwordConfirmation: "",
+  gender: "",
 };
 const onSubmit = (values) => {
   console.log(values);
@@ -32,8 +34,8 @@ const validationSchema = Yup.object({
   passwordConfirmation: Yup.string()
     .required("Password Confirmation is Required!")
     .oneOf([Yup.ref("password"), null], "Passwords must Match!"),
+  gender: Yup.string().required("Gender is Required!"),
 });
-
 const inputs = [
   { label: "Name", name: "name", type: "text" },
   { label: "Email", name: "email", type: "email" },
@@ -53,7 +55,7 @@ const SingUpForm = () => {
     validationSchema,
     validateOnMount: true,
   });
-  //   console.log("visited fields", formik.touched);
+  console.log("formik values", formik.values);
 
   return (
     <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-lg">
@@ -68,6 +70,10 @@ const SingUpForm = () => {
             formik={formik}
           />
         ))}
+        <div className="flex gap-x-2.5">
+          <RadioBtn label="Male" formik={formik} />
+          <RadioBtn label="Female" formik={formik} />
+        </div>
         <button
           type="submit"
           disabled={!formik.isValid}
