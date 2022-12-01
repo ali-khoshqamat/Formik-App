@@ -1,9 +1,12 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Input from "../common/Input";
-import RadioBtn from "../common/RadioBtn";
+import RadioInput from "../common/RadioInput";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const SingUpForm = () => {
+  const [savedFormValues, setSavedFormValues] = useState(null);
   const formik = useFormik({
     initialValues: savedFormValues || initialValues,
     onSubmit,
@@ -11,13 +14,20 @@ const SingUpForm = () => {
     validateOnMount: true,
     enableReinitialize: true,
   });
-  console.log("formik values", formik.values);
+  console.log(formik.errors.gender);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/users/1")
+      .then(({ data }) => setSavedFormValues(data))
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-lg">
       <h2 className="font-bold text-center">SingUp Form</h2>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-2.5">
-        {inputs.map((input) => (
+        {inputOptions.map((input) => (
           <Input
             key={input.name}
             label={input.label}
@@ -26,10 +36,11 @@ const SingUpForm = () => {
             formik={formik}
           />
         ))}
-        <div className="flex gap-x-2.5">
-          <RadioBtn label="Male" formik={formik} />
-          <RadioBtn label="Female" formik={formik} />
-        </div>
+        <RadioInput
+          name="gender"
+          radioOptions={GenderRadioOptions}
+          formik={formik}
+        />
         <button
           type="submit"
           disabled={!formik.isValid}
@@ -51,14 +62,6 @@ const initialValues = {
   password: "",
   passwordConfirmation: "",
   gender: "",
-};
-const savedFormValues = {
-  name: "Ali Khoshqamat",
-  email: "ali_khoshghamat@yahoo.com",
-  phoneNumber: "09120000000",
-  password: "Pp12345!",
-  passwordConfirmation: "Pp12345!",
-  gender: "Male",
 };
 const onSubmit = (values) => {
   console.log(values);
@@ -85,7 +88,7 @@ const validationSchema = Yup.object({
     .oneOf([Yup.ref("password"), null], "Passwords must Match!"),
   gender: Yup.string().required("Gender is Required!"),
 });
-const inputs = [
+const inputOptions = [
   { label: "Name", name: "name", type: "text" },
   { label: "Email", name: "email", type: "email" },
   { label: "Phone Number", name: "phoneNumber", type: "text" },
@@ -95,4 +98,8 @@ const inputs = [
     name: "passwordConfirmation",
     type: "password",
   },
+];
+const GenderRadioOptions = [
+  { label: "Male", value: "0" },
+  { label: "Female", value: "1" },
 ];
