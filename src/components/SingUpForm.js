@@ -4,6 +4,7 @@ import Input from "../common/Input";
 import RadioInput from "../common/RadioInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SelectInput from "../common/SelectInput";
 
 const SingUpForm = () => {
   const [savedFormValues, setSavedFormValues] = useState(null);
@@ -14,12 +15,13 @@ const SingUpForm = () => {
     validateOnMount: true,
     enableReinitialize: true,
   });
-  console.log(formik.errors.gender);
 
   useEffect(() => {
     axios
       .get("http://localhost:3001/users/1")
-      .then(({ data }) => setSavedFormValues(data))
+      .then(({ data }) => {
+        setSavedFormValues(data);
+      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -36,11 +38,18 @@ const SingUpForm = () => {
             formik={formik}
           />
         ))}
-        <RadioInput
-          name="gender"
-          radioOptions={GenderRadioOptions}
-          formik={formik}
-        />
+        <div className="flex justify-between items-center">
+          <RadioInput
+            name="gender"
+            radioOptions={GenderRadioOptions}
+            formik={formik}
+          />
+          <SelectInput
+            name="nationality"
+            formik={formik}
+            selectOptions={NationalitySelectOptions}
+          />
+        </div>
         <button
           type="submit"
           disabled={!formik.isValid}
@@ -62,6 +71,7 @@ const initialValues = {
   password: "",
   passwordConfirmation: "",
   gender: "",
+  nationality: "",
 };
 const onSubmit = (values) => {
   console.log(values);
@@ -87,6 +97,7 @@ const validationSchema = Yup.object({
     .required("Password Confirmation is Required!")
     .oneOf([Yup.ref("password"), null], "Passwords must Match!"),
   gender: Yup.string().required("Gender is Required!"),
+  nationality: Yup.string().required("Nationnality ir Required!"),
 });
 const inputOptions = [
   { label: "Name", name: "name", type: "text" },
@@ -102,4 +113,10 @@ const inputOptions = [
 const GenderRadioOptions = [
   { label: "Male", value: "0" },
   { label: "Female", value: "1" },
+];
+const NationalitySelectOptions = [
+  { value: "", label: "Select Nationality.." },
+  { value: "IR", label: "Iran" },
+  { value: "GER", label: "Germany" },
+  { value: "US", label: "USA", isDisabled: true },
 ];
