@@ -5,6 +5,8 @@ import RadioInput from "../common/RadioInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SelectInput from "../common/SelectInput";
+import CheckBoxInput from "../common/CheckBoxInput";
+import BooleanCheckBoxInput from "../common/BooleanCheckBoxInput";
 
 const SingUpForm = () => {
   const [savedFormValues, setSavedFormValues] = useState(null);
@@ -44,12 +46,18 @@ const SingUpForm = () => {
             radioOptions={GenderRadioOptions}
             formik={formik}
           />
-          <SelectInput
-            name="nationality"
+          <CheckBoxInput
+            name="intrests"
             formik={formik}
-            selectOptions={NationalitySelectOptions}
+            checkBoxOption={IntrestsCheckOptions}
           />
         </div>
+        <SelectInput
+          name="nationality"
+          formik={formik}
+          selectOptions={NationalitySelectOptions}
+        />
+        <BooleanCheckBoxInput formik={formik} name="terms" />
         <button
           type="submit"
           disabled={!formik.isValid}
@@ -72,6 +80,8 @@ const initialValues = {
   passwordConfirmation: "",
   gender: "",
   nationality: "",
+  intrests: [],
+  terms: false,
 };
 const onSubmit = (values) => {
   console.log(values);
@@ -98,6 +108,10 @@ const validationSchema = Yup.object({
     .oneOf([Yup.ref("password"), null], "Passwords must Match!"),
   gender: Yup.string().required("Gender is Required!"),
   nationality: Yup.string().required("Nationnality ir Required!"),
+  intrests: Yup.array().required("Intrest is Required!").min(1),
+  terms: Yup.boolean()
+    .required("The terms and conditions must be accepted.")
+    .oneOf([true], "The terms and conditions must be accepted."),
 });
 const inputOptions = [
   { label: "Name", name: "name", type: "text" },
@@ -119,4 +133,9 @@ const NationalitySelectOptions = [
   { value: "IR", label: "Iran" },
   { value: "GER", label: "Germany" },
   { value: "US", label: "USA", isDisabled: true },
+];
+const IntrestsCheckOptions = [
+  { label: "React.js", value: "react.js" },
+  { label: "Vue.js", value: "vue.js" },
+  { label: "Angular.js", value: "angular.js" },
 ];

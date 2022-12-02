@@ -1,4 +1,5 @@
-const RadioInput = ({ name, radioOptions, formik }) => {
+const CheckBoxInput = ({ name, formik, checkBoxOption }) => {
+  console.log(formik.errors.intrests);
   return (
     <div className="flex flex-col">
       {formik.errors[name] && formik.touched[name] && (
@@ -7,18 +8,18 @@ const RadioInput = ({ name, radioOptions, formik }) => {
         </label>
       )}
       <div className="flex gap-x-2.5">
-        {radioOptions.map(({ label, value }) => (
+        {checkBoxOption.map(({ label, value }) => (
           <div
             key={value}
             className="flex justify-between items-center gap-x-1"
           >
             <input
-              type="radio"
+              type="checkbox"
               id={value}
               name={name}
               value={value}
               onChange={formik.handleChange}
-              checked={formik.values[name] === value}
+              checked={formik.values[name].includes(value)}
             />
             <label htmlFor={value} className="text-sm">
               {label}
@@ -30,4 +31,4 @@ const RadioInput = ({ name, radioOptions, formik }) => {
   );
 };
 
-export default RadioInput;
+export default CheckBoxInput;
