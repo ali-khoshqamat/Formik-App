@@ -1,5 +1,4 @@
 const CheckBoxInput = ({ name, formik, checkBoxOption }) => {
-  console.log(formik.errors.intrests);
   return (
     <div className="flex flex-col">
       {formik.errors[name] && formik.touched[name] && (

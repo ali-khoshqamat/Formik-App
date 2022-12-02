@@ -8,9 +8,12 @@
       "password": "Pp12345!",
       "passwordConfirmation": "Pp12345!",
       "gender": "0",
-      "nationality": "IR",
-      "intrests": ["react.js"],
-      "terms": false
+      "nationality": "GER",
+      "intrests": [
+        "react.js",
+        "vue.js"
+      ],
+      "terms": true
     }
   ]
 }

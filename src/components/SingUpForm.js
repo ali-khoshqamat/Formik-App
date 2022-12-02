@@ -28,7 +28,7 @@ const SingUpForm = () => {
   }, []);
 
   return (
-    <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-lg">
+    <section className="w-[40rem] bg-[#24292f] text-white p-5 flex flex-col gap-y-5 rounded-xl">
       <h2 className="font-bold text-center">SingUp Form</h2>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-2.5">
         {inputOptions.map((input) => (
@@ -84,7 +84,11 @@ const initialValues = {
   terms: false,
 };
 const onSubmit = (values) => {
-  console.log(values);
+  // console.log({ ...values, newData: "new Data" });
+  axios
+    .post("http://localhost:3001/users", values)
+    .then(({ data }) => console.log(data))
+    .catch((error) => console.log(error));
 };
 const validationSchema = Yup.object({
   name: Yup.string()
